@@ -20,9 +20,13 @@ public class TennisCourtService {
     }
 
     public TennisCourtDTO findTennisCourtById(Long id) {
-        return tennisCourtRepository.findById(id).map(tennisCourtMapper::map).orElseThrow(() -> {
+
+        try{
+            return tennisCourtRepository.findById(id).map(tennisCourtMapper::map).get();
+        }catch(Exception e){
             throw new EntityNotFoundException("Tennis Court not found.");
-        });
+        }
+
     }
 
     public TennisCourtDTO findTennisCourtWithSchedulesById(Long tennisCourtId) {

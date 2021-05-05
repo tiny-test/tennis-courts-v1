@@ -21,9 +21,13 @@ public class ReservationService {
     }
 
     public ReservationDTO findReservation(Long reservationId) {
-        return reservationRepository.findById(reservationId).map(reservationMapper::map).orElseThrow(() -> {
+
+        try{
+            return reservationRepository.findById(reservationId).map(reservationMapper::map).get();
+        }catch(Exception e){
             throw new EntityNotFoundException("Reservation not found.");
-        });
+        }
+
     }
 
     public ReservationDTO cancelReservation(Long reservationId) {
@@ -31,16 +35,20 @@ public class ReservationService {
     }
 
     private Reservation cancel(Long reservationId) {
-        return reservationRepository.findById(reservationId).map(reservation -> {
+        try{
+            return reservationRepository.findById(reservationId).map(reservation -> {
 
-            this.validateCancellation(reservation);
+                this.validateCancellation(reservation);
 
-            BigDecimal refundValue = getRefundValue(reservation);
-            return this.updateReservation(reservation, refundValue, ReservationStatus.CANCELLED);
+                BigDecimal refundValue = getRefundValue(reservation);
+                return this.updateReservation(reservation, refundValue, ReservationStatus.CANCELLED);
 
-        }).orElseThrow(() -> {
+            }).get();
+
+        }catch(Exception e){
             throw new EntityNotFoundException("Reservation not found.");
-        });
+        }
+
     }
 
     private Reservation updateReservation(Reservation reservation, BigDecimal refundValue, ReservationStatus status) {
