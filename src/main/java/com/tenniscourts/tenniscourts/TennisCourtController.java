@@ -2,6 +2,7 @@ package com.tenniscourts.tenniscourts;
 
 import com.tenniscourts.config.BaseRestController;
 import com.tenniscourts.guests.Guest;
+import com.tenniscourts.schedules.ScheduleDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
